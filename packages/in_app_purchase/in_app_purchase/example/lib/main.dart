@@ -14,8 +14,13 @@ import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 
 import 'consumable_store.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (Platform.isIOS) {
+    final bool sk2 = await InAppPurchaseStoreKitPlatform.enableStoreKit2();
+    print("Using StoreKit ${sk2 ? "2" : "1"}");
+  }
 
   runApp(_MyApp());
 }
