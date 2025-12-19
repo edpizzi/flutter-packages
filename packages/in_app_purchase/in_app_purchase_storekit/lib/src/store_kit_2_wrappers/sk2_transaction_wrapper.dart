@@ -21,6 +21,7 @@ class SK2Transaction {
     required this.originalId,
     required this.productId,
     required this.purchaseDate,
+    required this.pendingCompletion,
     this.expirationDate,
     this.quantity = 1,
     required this.appAccountToken,
@@ -51,6 +52,9 @@ class SK2Transaction {
 
   /// The number of consumable products purchased.
   final int quantity;
+
+  /// True if we know this transaction to not be completed.
+  final bool pendingCompletion;
 
   /// A UUID that associates the transaction with a user on your own service.
   final String? appAccountToken;
@@ -120,6 +124,12 @@ class SK2Transaction {
 }
 
 extension on SK2TransactionMessage {
+  // This relies on the fact that transactions from purchase updates,
+  // restorePurchases, and unfinishedTransactions populate receipt data, but
+  // the all-transactions queue does not. SK2 restorePurchases transactions do
+  // not need to call completeTransaction.
+  bool get pendingCompletion => (receiptData?.isNotEmpty == true) && !restoring;
+
   SK2Transaction convertFromPigeon() {
     return SK2Transaction(
       id: id.toString(),
@@ -130,6 +140,7 @@ extension on SK2TransactionMessage {
       appAccountToken: appAccountToken,
       receiptData: receiptData,
       jsonRepresentation: jsonRepresentation,
+      pendingCompletion: pendingCompletion,
     );
   }
 
@@ -154,6 +165,7 @@ extension on SK2TransactionMessage {
       status: restoring ? PurchaseStatus.restored : PurchaseStatus.purchased,
       purchaseID: id.toString(),
       appAccountToken: appAccountToken,
+      pendingCompletePurchase: pendingCompletion,
     );
   }
 }

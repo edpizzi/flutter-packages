@@ -389,6 +389,7 @@ class FakeStoreKit2Platform implements InAppPurchase2API {
       purchaseDate: '',
       appAccountToken: '',
       restoring: true,
+      receiptData: 'receiptData',
     );
   }
 

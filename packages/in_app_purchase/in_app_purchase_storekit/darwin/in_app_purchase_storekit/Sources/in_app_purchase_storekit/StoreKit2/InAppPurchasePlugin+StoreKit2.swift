@@ -223,7 +223,7 @@ extension InAppPurchasePlugin: InAppPurchase2API {
       @MainActor in
       do {
         let transactionsMsgs = await rawTransactions().map {
-          $0.convertToPigeon(receipt: nil);
+          $0.convertToPigeon(receipt: nil)
         }
         completion(.success(transactionsMsgs))
       }
