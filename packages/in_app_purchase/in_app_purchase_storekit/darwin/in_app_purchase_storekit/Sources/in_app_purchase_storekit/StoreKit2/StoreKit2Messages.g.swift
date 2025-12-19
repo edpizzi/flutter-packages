@@ -493,6 +493,7 @@ struct SK2TransactionMessage: Hashable {
   var purchasedQuantity: Int64
   var appAccountToken: String? = nil
   var restoring: Bool
+  var pendingCompletion: Bool
   var receiptData: String? = nil
   var error: SK2ErrorMessage? = nil
   var jsonRepresentation: String? = nil
@@ -508,9 +509,10 @@ struct SK2TransactionMessage: Hashable {
     let purchasedQuantity = pigeonVar_list[5] as! Int64
     let appAccountToken: String? = nilOrValue(pigeonVar_list[6])
     let restoring = pigeonVar_list[7] as! Bool
-    let receiptData: String? = nilOrValue(pigeonVar_list[8])
-    let error: SK2ErrorMessage? = nilOrValue(pigeonVar_list[9])
-    let jsonRepresentation: String? = nilOrValue(pigeonVar_list[10])
+    let pendingCompletion = pigeonVar_list[8] as! Bool
+    let receiptData: String? = nilOrValue(pigeonVar_list[9])
+    let error: SK2ErrorMessage? = nilOrValue(pigeonVar_list[10])
+    let jsonRepresentation: String? = nilOrValue(pigeonVar_list[11])
 
     return SK2TransactionMessage(
       id: id,
@@ -521,6 +523,7 @@ struct SK2TransactionMessage: Hashable {
       purchasedQuantity: purchasedQuantity,
       appAccountToken: appAccountToken,
       restoring: restoring,
+      pendingCompletion: pendingCompletion,
       receiptData: receiptData,
       error: error,
       jsonRepresentation: jsonRepresentation
@@ -536,6 +539,7 @@ struct SK2TransactionMessage: Hashable {
       purchasedQuantity,
       appAccountToken,
       restoring,
+      pendingCompletion,
       receiptData,
       error,
       jsonRepresentation,

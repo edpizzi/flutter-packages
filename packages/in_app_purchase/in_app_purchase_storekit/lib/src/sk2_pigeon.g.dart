@@ -549,6 +549,7 @@ class SK2TransactionMessage {
     this.purchasedQuantity = 1,
     this.appAccountToken,
     this.restoring = false,
+    required this.pendingCompletion,
     this.receiptData,
     this.error,
     this.jsonRepresentation,
@@ -570,6 +571,8 @@ class SK2TransactionMessage {
 
   bool restoring;
 
+  bool pendingCompletion;
+
   String? receiptData;
 
   SK2ErrorMessage? error;
@@ -586,6 +589,7 @@ class SK2TransactionMessage {
       purchasedQuantity,
       appAccountToken,
       restoring,
+      pendingCompletion,
       receiptData,
       error,
       jsonRepresentation,
@@ -606,9 +610,10 @@ class SK2TransactionMessage {
       purchasedQuantity: result[5]! as int,
       appAccountToken: result[6] as String?,
       restoring: result[7]! as bool,
-      receiptData: result[8] as String?,
-      error: result[9] as SK2ErrorMessage?,
-      jsonRepresentation: result[10] as String?,
+      pendingCompletion: result[8]! as bool,
+      receiptData: result[9] as String?,
+      error: result[10] as SK2ErrorMessage?,
+      jsonRepresentation: result[11] as String?,
     );
   }
 
