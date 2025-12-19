@@ -389,6 +389,7 @@ class FakeStoreKit2Platform implements InAppPurchase2API {
       purchaseDate: '',
       appAccountToken: '',
       restoring: true,
+      pendingCompletion: false,
     );
   }
 
@@ -446,6 +447,7 @@ class FakeStoreKit2Platform implements InAppPurchase2API {
         originalId: 123,
         productId: 'product_id',
         purchaseDate: '12-12',
+        pendingCompletion: false,
       ),
     ]);
   }
@@ -460,6 +462,7 @@ class FakeStoreKit2Platform implements InAppPurchase2API {
         purchaseDate: '12-12',
         receiptData: 'fake_jws_representation',
         appAccountToken: 'fake_app_account_token',
+        pendingCompletion: true,
       ),
     ]);
   }
@@ -549,5 +552,6 @@ SK2TransactionMessage createPendingTransaction(String id, {int quantity = 1}) {
     appAccountToken: 'appAccountToken',
     receiptData: 'receiptData',
     jsonRepresentation: 'jsonRepresentation',
+    pendingCompletion: true,
   );
 }

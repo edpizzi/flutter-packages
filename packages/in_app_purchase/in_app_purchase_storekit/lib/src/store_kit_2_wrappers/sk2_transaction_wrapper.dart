@@ -21,6 +21,7 @@ class SK2Transaction {
     required this.originalId,
     required this.productId,
     required this.purchaseDate,
+    required this.pendingCompletion,
     this.expirationDate,
     this.quantity = 1,
     required this.appAccountToken,
@@ -51,6 +52,9 @@ class SK2Transaction {
 
   /// The number of consumable products purchased.
   final int quantity;
+
+  /// True if we know this transaction to not be completed.
+  final bool pendingCompletion;
 
   /// A UUID that associates the transaction with a user on your own service.
   final String? appAccountToken;
@@ -130,10 +134,17 @@ extension on SK2TransactionMessage {
       appAccountToken: appAccountToken,
       receiptData: receiptData,
       jsonRepresentation: jsonRepresentation,
+      pendingCompletion: pendingCompletion,
     );
   }
 
   PurchaseDetails convertToDetails() {
+    final PurchaseStatus status;
+    if (restoring) {
+      status = PurchaseStatus.restored;
+    } else {
+      status = pendingCompletion ? PurchaseStatus.pending : PurchaseStatus.purchased;
+    }
     return SK2PurchaseDetails(
       productID: productId,
       // in SK2, as per Apple
@@ -151,7 +162,7 @@ extension on SK2TransactionMessage {
       // require to be finished, and are already purchased.
       // So set this as purchased for all transactions initially.
       // Any failed transaction will simply not be returned.
-      status: restoring ? PurchaseStatus.restored : PurchaseStatus.purchased,
+      status: status,
       purchaseID: id.toString(),
       appAccountToken: appAccountToken,
     );
