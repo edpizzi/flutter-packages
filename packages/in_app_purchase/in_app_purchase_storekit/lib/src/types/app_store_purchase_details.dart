@@ -91,13 +91,16 @@ class SK2PurchaseDetails extends PurchaseDetails {
     required super.verificationData,
     required super.transactionDate,
     required super.status,
+    required bool pendingCompletePurchase,
     this.appAccountToken,
-  });
+  }) : _pendingCompletePurchase = pendingCompletePurchase;
 
   /// A UUID that associates the transaction with a user on your own service.
   /// This is the value set when making the purchase via appAccountToken option.
   final String? appAccountToken;
 
+  bool _pendingCompletePurchase;
+
   @override
-  bool get pendingCompletePurchase => status == PurchaseStatus.purchased;
+  bool get pendingCompletePurchase => _pendingCompletePurchase;
 }

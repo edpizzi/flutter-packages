@@ -139,12 +139,6 @@ extension on SK2TransactionMessage {
   }
 
   PurchaseDetails convertToDetails() {
-    final PurchaseStatus status;
-    if (restoring) {
-      status = PurchaseStatus.restored;
-    } else {
-      status = pendingCompletion ? PurchaseStatus.pending : PurchaseStatus.purchased;
-    }
     return SK2PurchaseDetails(
       productID: productId,
       // in SK2, as per Apple
@@ -162,9 +156,11 @@ extension on SK2TransactionMessage {
       // require to be finished, and are already purchased.
       // So set this as purchased for all transactions initially.
       // Any failed transaction will simply not be returned.
-      status: status,
+      // Refunded purchases are not yet handled.
+      status: restoring ? PurchaseStatus.restored : PurchaseStatus.purchased,
       purchaseID: id.toString(),
       appAccountToken: appAccountToken,
+      pendingCompletePurchase: pendingCompletion,
     );
   }
 }
