@@ -192,7 +192,7 @@ extension Product.PurchaseResult {
 
 @available(iOS 15.0, macOS 12.0, *)
 extension Transaction {
-  func convertToPigeon(receipt: String?) -> SK2TransactionMessage {
+  func convertToPigeon(receipt: String?, restoring: Bool = false) -> SK2TransactionMessage {
 
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -205,7 +205,10 @@ extension Transaction {
       expirationDate: expirationDate.map { dateFormatter.string(from: $0) },
       purchasedQuantity: Int64(purchasedQuantity),
       appAccountToken: appAccountToken?.uuidString,
-      restoring: receipt != nil,
+      restoring: restoring,
+      // Note: receipt is null on the transactions queue accessor (transactions that we do not know
+      // to need to call finish), but not transactions.unfinished.
+      pendingCompletion: (receipt != nil) && !restoring,
       receiptData: receipt,
       jsonRepresentation: String(decoding: jsonRepresentation, as: UTF8.self)
     )
