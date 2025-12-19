@@ -175,6 +175,7 @@ class SK2TransactionMessage {
     required this.originalId,
     required this.productId,
     required this.purchaseDate,
+    required this.pendingCompletion,
     this.expirationDate,
     this.purchasedQuantity = 1,
     this.appAccountToken,
@@ -191,6 +192,7 @@ class SK2TransactionMessage {
   final int purchasedQuantity;
   final String? appAccountToken;
   final bool restoring;
+  final bool pendingCompletion;
   final String? receiptData;
   final SK2ErrorMessage? error;
   final String? jsonRepresentation;
