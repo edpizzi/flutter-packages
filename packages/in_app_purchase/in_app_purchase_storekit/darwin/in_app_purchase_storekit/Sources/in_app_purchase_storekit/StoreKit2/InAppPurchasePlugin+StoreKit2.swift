@@ -355,7 +355,7 @@ extension InAppPurchasePlugin: InAppPurchase2API {
 
   /// Sends an transaction back to Dart. Access these transactions with `purchaseStream`
   private func sendTransactionUpdate(transaction: Transaction, receipt: String? = nil, restoring: Bool = false) {
-    let transactionMessage = transaction.convertToPigeon(receipt: receipt)
+    let transactionMessage = transaction.convertToPigeon(receipt: receipt, restoring: restoring)
     Task { @MainActor in
       self.transactionCallbackAPI?.onTransactionsUpdated(newTransactions: [transactionMessage]) {
         result in
